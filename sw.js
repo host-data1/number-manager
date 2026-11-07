@@ -1,4 +1,4 @@
-const C='nm-v2',X='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',A=['./','./index.html','./manifest.json','./icon-180.png','./icon-192.png','./icon-512.png',X];
+const C='nm-v3',X='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',A=['./','./index.html','./manifest.json','./icon-180.png','./icon-192.png','./icon-512.png',X];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>Promise.all(A.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>clients.claim())));
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.search||(u.origin!==location.origin&&u.href!==X))return;e.respondWith(caches.match(e.request).then(r=>{const f=fetch(e.request).then(x=>{if(x&&(x.ok||x.type==='opaque'))caches.open(C).then(c=>c.put(e.request,x.clone()));return x}).catch(()=>r||caches.match('./index.html'));return r||f}))});
